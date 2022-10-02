@@ -3,3 +3,17 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+.card-text {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+}
+.modal-content {
+	.modal-body {
+		img {
+			width: 100%;
+		}
+	}
+}
