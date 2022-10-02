@@ -5,7 +5,6 @@ import axios from "axios";
 import MovieList from './components/MovieList';
 import Gnb from './components/Gnb';
 
-
 function App() {
 	const [movies, setMovies] = useState([]);
 	const [loading, setLoading] = useState(true);
