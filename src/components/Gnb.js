@@ -1,27 +1,49 @@
-import { Container, Navbar, Nav } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function Gnb() {
+	const sorts = [
+		{
+			name: 'title'
+		},
+		{
+			name: 'year'
+		},
+		{
+			name: 'rating'
+		},
+		{
+			name: 'peers'
+		},
+		{
+			name: 'download_count'
+		},
+		{
+			name: 'like_count'
+		},
+		{
+			name: 'date_added'
+		},
+	]
 	return (
 		<>
-			<Navbar bg="dark" variant="dark">
+			<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" sticky="top">
 				<Container>
-					<NavLink to="/" className="navbar-brand">MOVIE</NavLink>
-					{/* <Navbar.Brand to="/">HOME</Navbar.Brand> */}
-					{/* <Nav className="me-auto">
-						<Nav.Link href="#home">Home</Nav.Link>
-						<Nav.Link href="#features">Features</Nav.Link>
-						<Nav.Link href="#pricing">Pricing</Nav.Link>
-					</Nav> */}
-					{/* <Nav className="me-auto">
-					{
-						categories.map((category, i) => {
-							return (
-								<NavLink to={category.name} key={i} className="nav-link">{category.text}</NavLink>
-							)
-						})
-					}
-				</Nav> */}
+					<Navbar.Brand as={Link} to="/all">MOVIE</Navbar.Brand>
+					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+					<Navbar.Collapse id="responsive-navbar-nav">
+						<Nav className="ms-auto">
+							<NavDropdown title="Sort" id="collasible-nav-dropdown">
+								{
+									sorts.map((sort, i) => {
+										return (
+											<NavDropdown.Item as={Link} to={sort.name} key={i}>{sort.name}</NavDropdown.Item>
+										)
+									})
+								}
+							</NavDropdown>
+						</Nav>
+					</Navbar.Collapse>
 				</Container>
 			</Navbar>
 		</>

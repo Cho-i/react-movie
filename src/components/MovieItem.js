@@ -23,7 +23,7 @@ function MovieItem({ movie }) {
 				</Card>
 			</Col>
 			{
-				(show == true) ? <Popup show={show} setShow={setShow} movie={movie} ImgError={ImgError} /> : null
+				(show === true) ? <Popup show={show} setShow={setShow} movie={movie} ImgError={ImgError} /> : null
 			}
 		</>
 	)

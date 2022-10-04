@@ -1,4 +1,3 @@
-//import { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 function Popup({ show, setShow, movie, ImgError }) {
@@ -16,6 +15,11 @@ function Popup({ show, setShow, movie, ImgError }) {
 					<p className="mt-2">평점 : {movie.rating}</p>
 					<p className="mt-2">시간 : {movie.runtime}분</p>
 					<p className="mt-2">{movie.description_full}</p>
+					<div className="d-grid gap-2">
+						<Button href={movie.url} target="_blank" rel="noopener noreferrer" variant="outline-dark" size="lg">
+							Link
+						</Button>
+					</div>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="dark" onClick={handleClose}>
