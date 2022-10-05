@@ -18,7 +18,9 @@ function MovieList() {
 			const res = await axios.get(
 				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
 			);
-			setMovies(res.data.data.movies);
+			const mergedData = [...movies, ...res.data.data.movies]
+			setMovies(mergedData)
+			//setMovies(res.data.data.movies);
 		} catch (e) {
 			console.log(e);
 		}
@@ -27,13 +29,33 @@ function MovieList() {
 
 	useEffect(() => {
 		getMovies();
-	}, [sort]);
+	}, [sort, page]);
 
-	//console.log(sort)
+	// console.log(sort)
+
+	// 스크롤 이벤트 핸들러
+	const handleScroll = () => {
+		const scrollHeight = document.documentElement.scrollHeight;
+		const scrollTop = document.documentElement.scrollTop;
+		const clientHeight = document.documentElement.clientHeight;
+		if (scrollTop + clientHeight >= scrollHeight && loading === false) {
+			// 페이지 끝에 도달하면 추가 데이터를 받아온다
+			setPage(page + 1);
+		}
+	};
+
+	useEffect(() => {
+		// scroll event listener 등록
+		window.addEventListener("scroll", handleScroll);
+		return () => {
+			// scroll event listener 해제
+			window.removeEventListener("scroll", handleScroll);
+		};
+	})
 
 	return (
 		<>
-			<Container className="mt-4">
+			<Container className="mt-4 mb-4">
 				<Row xs={1} md={2} className="g-4">
 					{
 						movies.map((movie, i) => {
