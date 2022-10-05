@@ -11,6 +11,18 @@ function MovieList() {
 	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1);
 
+	/**
+	 * 이게 맞는걸까
+	 */
+	const handleScroll = () => {
+		const scrollHeight = document.documentElement.scrollHeight;
+		const scrollTop = document.documentElement.scrollTop;
+		const clientHeight = document.documentElement.clientHeight;
+		if (scrollTop + clientHeight >= scrollHeight && loading === false) {
+			setPage(page + 1);
+		}
+	};
+
 	const getMovies = async () => {
 		setLoading(true);
 		try {
@@ -31,27 +43,15 @@ function MovieList() {
 		getMovies();
 	}, [sort, page]);
 
-	// console.log(sort)
-
-	// 스크롤 이벤트 핸들러
-	const handleScroll = () => {
-		const scrollHeight = document.documentElement.scrollHeight;
-		const scrollTop = document.documentElement.scrollTop;
-		const clientHeight = document.documentElement.clientHeight;
-		if (scrollTop + clientHeight >= scrollHeight && loading === false) {
-			// 페이지 끝에 도달하면 추가 데이터를 받아온다
-			setPage(page + 1);
-		}
-	};
-
 	useEffect(() => {
-		// scroll event listener 등록
-		window.addEventListener("scroll", handleScroll);
+		const timer = setInterval(() => {
+			window.addEventListener("scroll", handleScroll);
+		}, 100);
 		return () => {
-			// scroll event listener 해제
+			clearInterval(timer);
 			window.removeEventListener("scroll", handleScroll);
 		};
-	})
+	});
 
 	return (
 		<>
