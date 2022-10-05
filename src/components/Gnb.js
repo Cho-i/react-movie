@@ -32,8 +32,8 @@ function Gnb() {
 					<Navbar.Brand as={Link} to="/all">MOVIE</Navbar.Brand>
 					<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 					<Navbar.Collapse id="responsive-navbar-nav">
-						<Nav className="ms-auto">
-							<NavDropdown title="Sort" id="collasible-nav-dropdown">
+						<Nav>
+							<NavDropdown title="SORT" id="collasible-nav-dropdown">
 								{
 									sorts.map((sort, i) => {
 										return (

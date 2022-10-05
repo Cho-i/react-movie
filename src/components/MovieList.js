@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { Container, Row } from 'react-bootstrap';
@@ -9,13 +9,14 @@ function MovieList() {
 	const { sort } = useParams();
 	const [movies, setMovies] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const [page, setPage] = useState(1);
 
 	const getMovies = async () => {
 		setLoading(true);
 		try {
 			const query = (sort === 'all') ? '' : `sort_by=${sort}`;
 			const res = await axios.get(
-				`https://yts.mx/api/v2/list_movies.json?${query}`,
+				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
 			);
 			setMovies(res.data.data.movies);
 		} catch (e) {
