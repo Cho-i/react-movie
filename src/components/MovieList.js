@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import { Container, Row } from 'react-bootstrap';
 import MovieItem from './MovieItem';
@@ -30,9 +30,22 @@ function MovieList() {
 			const res = await axios.get(
 				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
 			);
+			setMovies(res.data.data.movies);
+		} catch (e) {
+			console.log(e);
+		}
+		setLoading(false);
+	}
+
+	const getMoviesPage = async () => {
+		setLoading(true);
+		try {
+			const query = (sort === 'all') ? '' : `sort_by=${sort}`;
+			const res = await axios.get(
+				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
+			);
 			const mergedData = [...movies, ...res.data.data.movies]
 			setMovies(mergedData)
-			//setMovies(res.data.data.movies);
 		} catch (e) {
 			console.log(e);
 		}
@@ -41,7 +54,12 @@ function MovieList() {
 
 	useEffect(() => {
 		getMovies();
-	}, [sort, page]);
+		document.documentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}, [sort]);
+
+	useEffect(() => {
+		getMoviesPage();
+	}, [page]);
 
 	useEffect(() => {
 		const timer = setInterval(() => {

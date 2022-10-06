@@ -8,9 +8,10 @@ import Error from './components/Error';
 function App() {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const path = location.pathname;
 
 	useEffect(() => {
-		if (location.pathname === '/') {
+		if (path === '/') {
 			navigate('/all')
 		}
 	});
