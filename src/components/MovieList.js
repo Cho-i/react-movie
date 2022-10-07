@@ -1,5 +1,5 @@
-import { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { Container, Row } from 'react-bootstrap';
 import MovieItem from './MovieItem';
@@ -23,10 +23,10 @@ function MovieList() {
 		}
 	};
 
+	const query = (sort === 'all') ? '' : `sort_by=${sort}`;
 	const getMovies = async () => {
 		setLoading(true);
 		try {
-			const query = (sort === 'all') ? '' : `sort_by=${sort}`;
 			const res = await axios.get(
 				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
 			);
@@ -36,11 +36,9 @@ function MovieList() {
 		}
 		setLoading(false);
 	}
-
-	const getMoviesPage = async () => {
+	const getMovies2 = async () => {
 		setLoading(true);
 		try {
-			const query = (sort === 'all') ? '' : `sort_by=${sort}`;
 			const res = await axios.get(
 				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
 			);
@@ -54,11 +52,11 @@ function MovieList() {
 
 	useEffect(() => {
 		getMovies();
-		document.documentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		document.documentElement.scrollIntoView({ block: 'start' });
 	}, [sort]);
 
 	useEffect(() => {
-		getMoviesPage();
+		getMovies2();
 	}, [page]);
 
 	useEffect(() => {

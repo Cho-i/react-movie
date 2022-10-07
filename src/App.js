@@ -20,7 +20,7 @@ function App() {
 		<div className="App">
 			<Gnb />
 			<Routes>
-				<Route path="/:sort" exact element={<MovieList />} />
+				<Route path="/:sort" exact element={<MovieList path={path} />} />
 				<Route path="*" element={<Error />} />
 			</Routes>
 		</div>
