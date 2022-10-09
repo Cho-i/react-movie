@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from "axios";
 import { Container, Row } from 'react-bootstrap';
 import MovieItem from './MovieItem';
 import Loading from './Loading';
+import useAxios from '../hooks/useAxios';
 
 function MovieList() {
 	const { sort } = useParams();
-	const [movies, setMovies] = useState([]);
-	const [loading, setLoading] = useState(false);
 	const [page, setPage] = useState(1);
+	const query = (sort === 'all') ? '' : `sort_by=${sort}`;
+	const [data, loading] = useAxios(`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`);
+	const [movies, setMovies] = useState([]);
 
 	/**
-	 * 이게 맞는걸까
+	 * handleScroll : 스크롤이 맨 하단일때 page 추가
 	 */
 	const handleScroll = () => {
 		const scrollHeight = document.documentElement.scrollHeight;
@@ -23,42 +24,9 @@ function MovieList() {
 		}
 	};
 
-	const query = (sort === 'all') ? '' : `sort_by=${sort}`;
-	const getMovies = async () => {
-		setLoading(true);
-		try {
-			const res = await axios.get(
-				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
-			);
-			setMovies(res.data.data.movies);
-		} catch (e) {
-			console.log(e);
-		}
-		setLoading(false);
-	}
-	const getMovies2 = async () => {
-		setLoading(true);
-		try {
-			const res = await axios.get(
-				`https://yts.mx/api/v2/list_movies.json?${query}&page=${page}`,
-			);
-			const mergedData = [...movies, ...res.data.data.movies]
-			setMovies(mergedData)
-		} catch (e) {
-			console.log(e);
-		}
-		setLoading(false);
-	}
-
-	useEffect(() => {
-		getMovies();
-		document.documentElement.scrollIntoView({ block: 'start' });
-	}, [sort]);
-
-	useEffect(() => {
-		getMovies2();
-	}, [page]);
-
+	/**
+	 * window scroll event
+	 */
 	useEffect(() => {
 		const timer = setInterval(() => {
 			window.addEventListener("scroll", handleScroll);
@@ -69,14 +37,33 @@ function MovieList() {
 		};
 	});
 
+	useEffect(() => {
+		if (page === 1) {
+			setMovies(data.movies)
+		} else {
+			const mergedData = movies.concat(data.movies);
+			setMovies(mergedData)
+		}
+	}, [data]);
+
+	useEffect(() => {
+		setPage(1);
+		document.documentElement.scrollIntoView({ block: 'start' });
+	}, [sort]);
+
+	// 아직 movies 값이 설정되지 않았을 때
+	if (!movies) {
+		return null;
+	}
+
 	return (
 		<>
 			<Container className="mt-4 mb-4">
-				<Row xs={1} md={2} className="g-4">
+				<Row xs={1} md={4} className="g-4">
 					{
 						movies.map((movie, i) => {
 							return (
-								<MovieItem movie={movie} key={movie.id} />
+								<MovieItem movie={movie} />
 							)
 						})
 					}

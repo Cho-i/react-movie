@@ -23,7 +23,7 @@ function Gnb() {
 		},
 		{
 			name: 'date_added'
-		},
+		}
 	]
 	return (
 		<>
