@@ -8,10 +8,9 @@ import Error from './components/Error';
 function App() {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const path = location.pathname;
 
 	useEffect(() => {
-		if (path === '/') {
+		if (location.pathname === '/') {
 			navigate('/all')
 		}
 	});
@@ -20,7 +19,7 @@ function App() {
 		<div className="App">
 			<Gnb />
 			<Routes>
-				<Route path="/:sort" exact element={<MovieList path={path} />} />
+				<Route path="/:sort" exact element={<MovieList />} />
 				<Route path="*" element={<Error />} />
 			</Routes>
 		</div>
